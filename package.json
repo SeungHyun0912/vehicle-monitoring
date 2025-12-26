@@ -1,0 +1,21 @@
+{
+  "name": "vehicle-monitoring",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vehicle monitoring system with React frontend and NestJS backend",
+  "scripts": {
+    "dev": "pnpm run --parallel dev",
+    "dev:frontend": "pnpm --filter @vehicle-monitoring/frontend dev",
+    "dev:backend": "pnpm --filter @vehicle-monitoring/backend dev",
+    "build": "pnpm run --filter @vehicle-monitoring/* build",
+    "build:frontend": "pnpm --filter @vehicle-monitoring/frontend build",
+    "build:backend": "pnpm --filter @vehicle-monitoring/backend build",
+    "lint": "pnpm run --filter @vehicle-monitoring/* lint",
+    "test": "pnpm run --filter @vehicle-monitoring/* test"
+  },
+  "keywords": ["vehicle", "monitoring", "monorepo"],
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}
