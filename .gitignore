@@ -1,0 +1,104 @@
+# Dependencies
+**/node_modules/
+node_modules/
+apps/*/node_modules/
+apps/backend/node_modules/
+apps/frontend/node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+apps/*/.env
+apps/backend/.env
+apps/frontend/.env
+
+# Build outputs
+dist/
+build/
+out/
+**/dist/
+**/build/
+**/out/
+apps/*/dist/
+apps/*/build/
+apps/backend/dist/
+apps/frontend/dist/
+apps/frontend/build/
+apps/frontend/.next/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# Testing
+coverage/
+**/coverage/
+.nyc_output/
+*.lcov
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.turbo/
+.parcel-cache/
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# GraphQL
+schema.gql
+apps/backend/src/schema.gql
+
+# TypeScript
+*.tsbuildinfo
+
+# OS
+Thumbs.db
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Monorepo
+.pnpm-store/
+.yarn/
+.yarnrc.yml
+
+# Next.js
+.next/
+next-env.d.ts
+
+# Nest.js
+.nest/
+
+# Docker
+*.pid
+*.seed
+*.pid.lock
+
+# Misc
+.eslintcache
+*.bak

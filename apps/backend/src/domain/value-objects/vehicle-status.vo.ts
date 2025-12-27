@@ -1,0 +1,8 @@
+export enum VehicleStatus {
+  IDLE = 'IDLE',
+  MOVING = 'MOVING',
+  CHARGING = 'CHARGING',
+  ERROR = 'ERROR',
+  STOPPED = 'STOPPED',
+  MAINTENANCE = 'MAINTENANCE',
+}
