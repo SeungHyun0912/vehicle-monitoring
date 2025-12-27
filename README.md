@@ -1,6 +1,6 @@
 # Vehicle Monitoring System
 
-차량 모니터링 시스템을 위한 모노레포 프로젝트입니다.
+실시간 자율 주행 로봇 모니터링 시스템을 위한 모노레포 프로젝트입니다.
 
 ## 프로젝트 구조
 
@@ -24,8 +24,12 @@ vehicle-monitoring/
 
 ### Backend
 - NestJS
+- GraphQL (Apollo Server)
 - TypeScript
 - Clean Architecture
+- Redis + Pub/Sub
+- WebSocket (Socket.IO)
+- PostgreSQL + TypeORM (예정)
 
 ## 아키텍처
 
@@ -117,13 +121,38 @@ pnpm test
 
 ### API 문서
 
-백엔드 서버 실행 후 Swagger 문서를 확인할 수 있습니다:
-- http://localhost:4000/api/docs
+백엔드 서버 실행 후 다음 엔드포인트를 사용할 수 있습니다:
+- GraphQL Playground: http://localhost:4000/graphql
+- WebSocket: ws://localhost:4000/vehicles
+- Health Check: http://localhost:4000/health
+- Redis Health: http://localhost:4000/health/redis
+
+### Backend 구현 문서
+
+- [Task 1: Entity 설계 및 GraphQL 구현](apps/backend/IMPLEMENTATION_SUMMARY.md)
+- [Task 2: Redis 연동 및 실시간 데이터 처리](apps/backend/TASK2_IMPLEMENTATION_SUMMARY.md)
+- [Task List](apps/backend/task.md)
 
 ## 포트 설정
 
 - Frontend: http://localhost:3000
 - Backend: http://localhost:4000
+- Redis: localhost:6379 (default)
+
+## 개발 진행 상황
+
+- ✅ **Task 1**: 자율 주행 로봇 Entity 설계 및 GraphQL 구현
+  - Domain Layer (Entities, Value Objects, Repository Interfaces)
+  - GraphQL Schema (Types, Queries, Mutations, Subscriptions)
+
+- ✅ **Task 2**: Redis 연동 및 실시간 데이터 처리
+  - Redis Infrastructure (Client, Pub/Sub)
+  - Redis Repositories (Position, State)
+  - WebSocket Gateway (Socket.IO)
+  - Redis → WebSocket Bridge
+
+- ⏳ **Task 3**: Database 연동 및 Use Cases 구현 (예정)
+- ⏳ **Task 4**: Frontend 구현 (예정)
 
 ## 라이선스
 
