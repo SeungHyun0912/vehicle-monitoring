@@ -2,10 +2,12 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule as NestGraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
-import { VehicleResolver } from './resolvers';
+import { VehicleResolverImpl } from './resolvers/vehicle.resolver.impl';
+import { ApplicationModule } from '../../application/application.module';
 
 @Module({
   imports: [
+    ApplicationModule,
     NestGraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
@@ -23,7 +25,7 @@ import { VehicleResolver } from './resolvers';
       },
     }),
   ],
-  providers: [VehicleResolver],
+  providers: [VehicleResolverImpl],
   exports: [],
 })
 export class GraphQLModule {}
