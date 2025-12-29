@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from './presentation/graphql/graphql.module';
 import { WebSocketModule } from './presentation/websocket/websocket.module';
 import { RedisModule } from './infrastructure/redis/redis.module';
+import { DatabaseModule } from './infrastructure/database/database.module';
 import { HealthController } from './infrastructure/health/health.controller';
 
 @Module({
@@ -11,6 +12,7 @@ import { HealthController } from './infrastructure/health/health.controller';
       isGlobal: true,
       envFilePath: '.env',
     }),
+    DatabaseModule,
     RedisModule,
     GraphQLModule,
     WebSocketModule,

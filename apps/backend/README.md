@@ -1,70 +1,148 @@
-# Backend - Vehicle Monitoring System
+# Vehicle Monitoring Backend
 
-NestJS 기반의 차량 모니터링 시스템 백엔드입니다.
+자율 주행 로봇 모니터링 시스템 백엔드 서버
 
 ## 기술 스택
 
-- NestJS
-- TypeScript
-- Clean Architecture
+- **Framework**: NestJS
+- **Database**: PostgreSQL
+- **Cache/PubSub**: Redis
+- **API**: GraphQL (Apollo Server)
+- **Real-time**: WebSocket (Socket.IO)
+- **ORM**: TypeORM
+- **Architecture**: Clean Architecture (Domain-Driven Design)
 
-## 개발
+## 프로젝트 구조
 
-```bash
-# 개발 서버 실행
-pnpm dev
-
-# 빌드
-pnpm build
-
-# 프로덕션 실행
-pnpm start:prod
-
-# 린트
-pnpm lint
-
-# 테스트
-pnpm test
-
-# 테스트 커버리지
-pnpm test:cov
+```
+src/
+├── domain/                     # Domain Layer (비즈니스 로직)
+│   ├── entities/              # Domain Entities
+│   ├── value-objects/         # Value Objects
+│   └── repositories/          # Repository Interfaces
+│
+├── application/               # Application Layer (Use Cases)
+│   └── use-cases/
+│
+├── infrastructure/            # Infrastructure Layer (기술 구현)
+│   ├── config/               # 설정 파일
+│   ├── database/             # TypeORM Entities & Repositories
+│   │   ├── entities/
+│   │   ├── mappers/
+│   │   ├── migrations/
+│   │   └── repositories/
+│   ├── redis/                # Redis Repositories & Services
+│   │   ├── repositories/
+│   │   └── services/
+│   └── health/               # Health Check
+│
+└── presentation/             # Presentation Layer (API)
+    ├── graphql/              # GraphQL Resolvers & Types
+    └── websocket/            # WebSocket Gateways
 ```
 
-## Clean Architecture
+## 시작하기
 
-### 레이어 구조
+### 1. 필수 요구사항
 
-1. **Domain Layer** (도메인 레이어)
-   - 비즈니스 로직의 핵심
-   - 외부 의존성 없음
-   - Entities, Value Objects, Repository Interfaces
+- Node.js 18+
+- PostgreSQL 13+
+- Redis 6+
 
-2. **Application Layer** (애플리케이션 레이어)
-   - 유즈케이스 구현
-   - 도메인 레이어에만 의존
-   - Use Cases, DTOs, Interfaces
+### 2. 환경 설정
 
-3. **Infrastructure Layer** (인프라스트럭처 레이어)
-   - 외부 시스템과의 연동
-   - Repository 구현, Database, External APIs
+.env 파일을 생성하고 다음 설정을 추가하세요:
 
-4. **Presentation Layer** (프레젠테이션 레이어)
-   - HTTP 요청/응답 처리
-   - Controllers, Middlewares, Filters
+```bash
+# Server
+PORT=4000
+NODE_ENV=development
 
-### Path Alias
+# PostgreSQL
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+DB_DATABASE=vehicle_monitoring
+DB_SYNC=true
+DB_LOGGING=true
 
-```typescript
-@domain/*          -> src/domain/*
-@application/*     -> src/application/*
-@infrastructure/*  -> src/infrastructure/*
-@presentation/*    -> src/presentation/*
+# Redis
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=
+REDIS_DB=0
+```
+
+### 3. 설치
+
+```bash
+npm install
+```
+
+### 4. 데이터베이스 설정
+
+#### PostgreSQL 데이터베이스 생성
+
+```bash
+# PostgreSQL에 접속
+psql -U postgres
+
+# 데이터베이스 생성
+CREATE DATABASE vehicle_monitoring;
+
+# 종료
+\q
+```
+
+#### Migration 실행
+
+```bash
+# Migration 실행 (테이블 생성)
+npm run migration:run
+```
+
+### 5. Redis 서버 시작
+
+```bash
+redis-server
+```
+
+### 6. 서버 실행
+
+```bash
+npm run dev
+```
+
+### 7. 접속 확인
+
+- **Health Check**: http://localhost:4000/health
+- **GraphQL Playground**: http://localhost:4000/graphql
+- **WebSocket**: ws://localhost:4000/vehicles
+
+## 테스트 도구
+
+### Redis Vehicle Simulator
+
+```bash
+npm run simulator
+```
+
+자세한 내용은 [tools/README.md](tools/README.md)를 참조하세요.
+
+## NPM Scripts
+
+```bash
+npm run dev                 # 개발 서버 실행
+npm run build              # 프로덕션 빌드
+npm run simulator          # 차량 시뮬레이터
+npm run migration:run      # Migration 실행
+npm run migration:show     # Migration 상태 확인
 ```
 
 ## API 문서
 
-Swagger 문서: http://localhost:4000/api/docs
+- **GraphQL Playground**: http://localhost:4000/graphql
+- **Health Check**: http://localhost:4000/health
 
-## 환경 변수
-
-`.env.example`을 참고하여 `.env` 파일을 생성하세요.
+자세한 사용법은 [docs/TASK3_IMPLEMENTATION_SUMMARY.md](docs/TASK3_IMPLEMENTATION_SUMMARY.md)를 참조하세요.
