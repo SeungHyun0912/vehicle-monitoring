@@ -1,14 +1,20 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import HomePage from '@pages/HomePage'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ApolloProvider } from '@apollo/client';
+import { apolloClient } from './services/graphql/client';
+import HomePage from './pages/HomePage';
+import MapPage from './pages/MapPage';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-      </Routes>
-    </BrowserRouter>
-  )
+    <ApolloProvider client={apolloClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/map" element={<MapPage />} />
+        </Routes>
+      </BrowserRouter>
+    </ApolloProvider>
+  );
 }
 
-export default App
+export default App;
