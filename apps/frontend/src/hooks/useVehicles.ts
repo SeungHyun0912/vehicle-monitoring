@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useApolloClient } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client/react';
 import { useCallback, useEffect } from 'react';
 import {
   GET_VEHICLES,
@@ -18,7 +18,6 @@ import {
 } from '../services/graphql/mutations';
 import { useVehicleStore } from '../stores/vehicle.store';
 import {
-  AnyVehicle,
   VehicleFilter,
   VehicleType,
   VehicleStatus,
@@ -32,19 +31,17 @@ export function useVehicles(filter?: VehicleFilter) {
 
   const { data, loading, error, refetch } = useQuery(GET_VEHICLES, {
     variables: { filter },
-    onCompleted: (data) => {
-      if (data?.vehicles) {
-        setVehicles(data.vehicles);
-      }
-    },
-    onError: (error) => {
-      setError(error.message);
-    },
   });
 
   useEffect(() => {
     setLoading(loading);
   }, [loading, setLoading]);
+
+  useEffect(() => {
+    if ((data as any)?.vehicles) {
+      setVehicles((data as any).vehicles);
+    }
+  }, [data, setVehicles]);
 
   useEffect(() => {
     if (error) {
@@ -53,7 +50,7 @@ export function useVehicles(filter?: VehicleFilter) {
   }, [error, setError]);
 
   return {
-    vehicles: data?.vehicles || [],
+    vehicles: (data as any)?.vehicles || [],
     loading,
     error,
     refetch,
@@ -69,18 +66,22 @@ export function useVehicle(id: string) {
   const { data, loading, error, refetch } = useQuery(GET_VEHICLE, {
     variables: { id },
     skip: !id,
-    onCompleted: (data) => {
-      if (data?.vehicle) {
-        updateVehicle(id, data.vehicle);
-      }
-    },
-    onError: (error) => {
-      setError(error.message);
-    },
   });
 
+  useEffect(() => {
+    if ((data as any)?.vehicle) {
+      updateVehicle(id, (data as any).vehicle);
+    }
+  }, [data, id, updateVehicle]);
+
+  useEffect(() => {
+    if (error) {
+      setError(error.message);
+    }
+  }, [error, setError]);
+
   return {
-    vehicle: data?.vehicle,
+    vehicle: (data as any)?.vehicle,
     loading,
     error,
     refetch,
@@ -91,85 +92,14 @@ export function useVehicle(id: string) {
  * Hook for vehicle mutations
  */
 export function useVehicleMutations() {
-  const client = useApolloClient();
-  const { addVehicle, updateVehicle, removeVehicle, setError } =
-    useVehicleStore();
+  // Mutations don't need store integration - they return results directly
 
-  const [createVehicleMutation, { loading: creating }] = useMutation(
-    CREATE_VEHICLE,
-    {
-      onCompleted: (data) => {
-        if (data?.createVehicle) {
-          addVehicle(data.createVehicle);
-        }
-      },
-      onError: (error) => {
-        setError(error.message);
-      },
-    }
-  );
-
-  const [updateVehicleMutation, { loading: updating }] = useMutation(
-    UPDATE_VEHICLE,
-    {
-      onCompleted: (data) => {
-        if (data?.updateVehicle) {
-          updateVehicle(data.updateVehicle.id, data.updateVehicle);
-        }
-      },
-      onError: (error) => {
-        setError(error.message);
-      },
-    }
-  );
-
-  const [deleteVehicleMutation, { loading: deleting }] = useMutation(
-    DELETE_VEHICLE,
-    {
-      onCompleted: (data, options) => {
-        const id = options?.variables?.id;
-        if (id && data?.deleteVehicle) {
-          removeVehicle(id);
-        }
-      },
-      onError: (error) => {
-        setError(error.message);
-      },
-    }
-  );
-
-  const [enableVehicleMutation] = useMutation(ENABLE_VEHICLE, {
-    onCompleted: (data) => {
-      if (data?.enableVehicle) {
-        updateVehicle(data.enableVehicle.id, data.enableVehicle);
-      }
-    },
-    onError: (error) => {
-      setError(error.message);
-    },
-  });
-
-  const [disableVehicleMutation] = useMutation(DISABLE_VEHICLE, {
-    onCompleted: (data) => {
-      if (data?.disableVehicle) {
-        updateVehicle(data.disableVehicle.id, data.disableVehicle);
-      }
-    },
-    onError: (error) => {
-      setError(error.message);
-    },
-  });
-
-  const [updateStatusMutation] = useMutation(UPDATE_VEHICLE_STATUS, {
-    onCompleted: (data) => {
-      if (data?.updateVehicleStatus) {
-        updateVehicle(data.updateVehicleStatus.id, data.updateVehicleStatus);
-      }
-    },
-    onError: (error) => {
-      setError(error.message);
-    },
-  });
+  const [createVehicleMutation, { loading: creating }] = useMutation(CREATE_VEHICLE);
+  const [updateVehicleMutation, { loading: updating }] = useMutation(UPDATE_VEHICLE);
+  const [deleteVehicleMutation, { loading: deleting }] = useMutation(DELETE_VEHICLE);
+  const [enableVehicleMutation] = useMutation(ENABLE_VEHICLE);
+  const [disableVehicleMutation] = useMutation(DISABLE_VEHICLE);
+  const [updateStatusMutation] = useMutation(UPDATE_VEHICLE_STATUS);
 
   return {
     createVehicle: useCallback(
@@ -212,18 +142,22 @@ export function useVehiclePosition(vehicleId: string) {
     variables: { vehicleId },
     skip: !vehicleId,
     pollInterval: 1000, // Poll every second
-    onCompleted: (data) => {
-      if (data?.vehiclePosition) {
-        updatePosition(vehicleId, data.vehiclePosition);
-      }
-    },
-    onError: (error) => {
-      setError(error.message);
-    },
   });
 
+  useEffect(() => {
+    if ((data as any)?.vehiclePosition) {
+      updatePosition(vehicleId, (data as any).vehiclePosition);
+    }
+  }, [data, vehicleId, updatePosition]);
+
+  useEffect(() => {
+    if (error) {
+      setError(error.message);
+    }
+  }, [error, setError]);
+
   return {
-    position: data?.vehiclePosition,
+    position: (data as any)?.vehiclePosition,
     loading,
     error,
   };
@@ -239,18 +173,22 @@ export function useVehicleRuntimeState(vehicleId: string) {
     variables: { vehicleId },
     skip: !vehicleId,
     pollInterval: 1000, // Poll every second
-    onCompleted: (data) => {
-      if (data?.vehicleRuntimeState) {
-        updateRuntimeState(vehicleId, data.vehicleRuntimeState);
-      }
-    },
-    onError: (error) => {
-      setError(error.message);
-    },
   });
 
+  useEffect(() => {
+    if ((data as any)?.vehicleRuntimeState) {
+      updateRuntimeState(vehicleId, (data as any).vehicleRuntimeState);
+    }
+  }, [data, vehicleId, updateRuntimeState]);
+
+  useEffect(() => {
+    if (error) {
+      setError(error.message);
+    }
+  }, [error, setError]);
+
   return {
-    runtimeState: data?.vehicleRuntimeState,
+    runtimeState: (data as any)?.vehicleRuntimeState,
     loading,
     error,
   };
@@ -265,7 +203,7 @@ export function useVehiclesByType(type: VehicleType) {
   });
 
   return {
-    vehicles: data?.vehiclesByType || [],
+    vehicles: (data as any)?.vehiclesByType || [],
     loading,
     error,
   };
@@ -278,7 +216,7 @@ export function useEnabledVehicles() {
   const { data, loading, error } = useQuery(GET_ENABLED_VEHICLES);
 
   return {
-    vehicles: data?.enabledVehicles || [],
+    vehicles: (data as any)?.enabledVehicles || [],
     loading,
     error,
   };

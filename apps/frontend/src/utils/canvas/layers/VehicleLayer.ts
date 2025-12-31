@@ -180,7 +180,7 @@ export class VehicleLayer implements RenderLayer {
   private drawDirectionIndicator(
     ctx: CanvasRenderingContext2D,
     size: number,
-    color: string
+    _color: string
   ): void {
     const arrowSize = size * 0.5;
     ctx.fillStyle = '#FFF';

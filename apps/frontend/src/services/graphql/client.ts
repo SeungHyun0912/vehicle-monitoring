@@ -33,7 +33,7 @@ export const apolloClient = new ApolloClient({
       Query: {
         fields: {
           vehicles: {
-            merge(existing, incoming) {
+            merge(_existing, incoming) {
               return incoming;
             },
           },

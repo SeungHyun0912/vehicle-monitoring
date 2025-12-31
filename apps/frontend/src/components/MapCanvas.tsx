@@ -26,7 +26,7 @@ export const MapCanvas: React.FC<MapCanvasProps> = ({
   const interactionRef = useRef<CanvasInteractionHandler | null>(null);
   const vehicleLayerRef = useRef<VehicleLayer | null>(null);
 
-  const { vehicles, positions, runtimeStates, selectedVehicleId, setSelectedVehicleId } =
+  const { vehicles, positions, selectedVehicleId, setSelectedVehicleId } =
     useVehicleStore();
 
   const [isInitialized, setIsInitialized] = useState(false);

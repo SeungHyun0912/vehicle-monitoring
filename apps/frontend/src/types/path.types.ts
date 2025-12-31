@@ -2,8 +2,6 @@
  * Path Types - 경로 및 루트 관리
  */
 
-import { Position } from './vehicle.types';
-
 /**
  * Path Type
  */

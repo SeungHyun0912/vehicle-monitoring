@@ -98,7 +98,7 @@ export class CanvasInteractionHandler {
   /**
    * Mouse move handler
    */
-  private handleMouseMove = (e: MouseEvent): void {
+  private handleMouseMove = (e: MouseEvent): void => {
     const rect = this.canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -117,7 +117,7 @@ export class CanvasInteractionHandler {
   /**
    * Mouse up handler
    */
-  private handleMouseUp = (e: MouseEvent): void {
+  private handleMouseUp = (e: MouseEvent): void => {
     if (e.button === 0) {
       const rect = this.canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -143,7 +143,7 @@ export class CanvasInteractionHandler {
   /**
    * Mouse leave handler
    */
-  private handleMouseLeave = (): void {
+  private handleMouseLeave = (): void => {
     this.isPanning = false;
     this.mouseDownPos = null;
     this.canvas.style.cursor = 'default';
@@ -152,7 +152,7 @@ export class CanvasInteractionHandler {
   /**
    * Wheel handler (zoom)
    */
-  private handleWheel = (e: WheelEvent): void {
+  private handleWheel = (e: WheelEvent): void => {
     e.preventDefault();
 
     const rect = this.canvas.getBoundingClientRect();
@@ -166,7 +166,7 @@ export class CanvasInteractionHandler {
   /**
    * Touch start handler
    */
-  private handleTouchStart = (e: TouchEvent): void {
+  private handleTouchStart = (e: TouchEvent): void => {
     e.preventDefault();
 
     if (e.touches.length === 1) {
@@ -185,7 +185,7 @@ export class CanvasInteractionHandler {
   /**
    * Touch move handler
    */
-  private handleTouchMove = (e: TouchEvent): void {
+  private handleTouchMove = (e: TouchEvent): void => {
     e.preventDefault();
 
     if (e.touches.length === 1 && this.isPanning) {
@@ -211,7 +211,7 @@ export class CanvasInteractionHandler {
   /**
    * Touch end handler
    */
-  private handleTouchEnd = (e: TouchEvent): void {
+  private handleTouchEnd = (e: TouchEvent): void => {
     if (e.touches.length === 0) {
       if (this.mouseDownPos && this.isPanning) {
         const touch = e.changedTouches[0];
