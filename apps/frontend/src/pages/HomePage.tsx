@@ -15,19 +15,34 @@ function HomePage() {
     <div style={{ padding: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <h1>Vehicle Monitoring System</h1>
-        <Link
-          to="/map"
-          style={{
-            padding: '10px 20px',
-            backgroundColor: '#2196F3',
-            color: 'white',
-            textDecoration: 'none',
-            borderRadius: '4px',
-            fontWeight: 'bold',
-          }}
-        >
-          🗺️ Map View
-        </Link>
+        <div style={{ display: 'flex', gap: '1rem' }}>
+          <Link
+            to="/map"
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#2196F3',
+              color: 'white',
+              textDecoration: 'none',
+              borderRadius: '4px',
+              fontWeight: 'bold',
+            }}
+          >
+            🗺️ Map View
+          </Link>
+          <Link
+            to="/admin"
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#4CAF50',
+              color: 'white',
+              textDecoration: 'none',
+              borderRadius: '4px',
+              fontWeight: 'bold',
+            }}
+          >
+            ⚙️ Admin
+          </Link>
+        </div>
       </div>
 
       <div style={{ marginBottom: '1rem' }}>

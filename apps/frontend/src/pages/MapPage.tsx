@@ -60,20 +60,36 @@ function MapPage() {
               Filtered: {filteredVehicles.length}
             </div>
           </div>
-          <Link
-            to="/"
-            style={{
-              padding: '8px 16px',
-              backgroundColor: 'white',
-              color: '#2196F3',
-              textDecoration: 'none',
-              borderRadius: '4px',
-              fontWeight: 'bold',
-              fontSize: '14px',
-            }}
-          >
-            📋 List View
-          </Link>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <Link
+              to="/"
+              style={{
+                padding: '8px 16px',
+                backgroundColor: 'white',
+                color: '#2196F3',
+                textDecoration: 'none',
+                borderRadius: '4px',
+                fontWeight: 'bold',
+                fontSize: '14px',
+              }}
+            >
+              📋 List View
+            </Link>
+            <Link
+              to="/admin"
+              style={{
+                padding: '8px 16px',
+                backgroundColor: '#4CAF50',
+                color: 'white',
+                textDecoration: 'none',
+                borderRadius: '4px',
+                fontWeight: 'bold',
+                fontSize: '14px',
+              }}
+            >
+              ⚙️ Admin
+            </Link>
+          </div>
         </div>
 
         {/* Main Content */}
