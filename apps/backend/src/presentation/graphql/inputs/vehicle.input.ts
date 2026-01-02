@@ -4,6 +4,21 @@ import { GuideType } from '../../../domain/entities/agv.entity';
 import { IsNotEmpty, IsOptional, Min, Max, IsEnum } from 'class-validator';
 
 @InputType()
+export class DimensionsInput {
+  @Field()
+  @Min(0)
+  length: number;
+
+  @Field()
+  @Min(0)
+  width: number;
+
+  @Field()
+  @Min(0)
+  height: number;
+}
+
+@InputType()
 export class VehicleSpecificationInput {
   @Field()
   @Min(0)
@@ -25,21 +40,6 @@ export class VehicleSpecificationInput {
   @IsOptional()
   @Min(0)
   weight?: number;
-}
-
-@InputType()
-export class DimensionsInput {
-  @Field()
-  @Min(0)
-  length: number;
-
-  @Field()
-  @Min(0)
-  width: number;
-
-  @Field()
-  @Min(0)
-  height: number;
 }
 
 @InputType()

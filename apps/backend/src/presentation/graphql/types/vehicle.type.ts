@@ -12,6 +12,18 @@ registerEnumType(VehicleStatusEnum, {
 });
 
 @ObjectType()
+export class DimensionsType {
+  @Field()
+  length: number;
+
+  @Field()
+  width: number;
+
+  @Field()
+  height: number;
+}
+
+@ObjectType()
 export class VehicleSpecificationType {
   @Field()
   maxSpeed: number;
@@ -27,18 +39,6 @@ export class VehicleSpecificationType {
 
   @Field({ nullable: true })
   weight?: number;
-}
-
-@ObjectType()
-export class DimensionsType {
-  @Field()
-  length: number;
-
-  @Field()
-  width: number;
-
-  @Field()
-  height: number;
 }
 
 @InterfaceType()
