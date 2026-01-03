@@ -2,11 +2,11 @@ import { gql } from '@apollo/client';
 import { VEHICLE_FIELDS } from './queries';
 
 /**
- * Mutation: Create new vehicle
+ * Mutation: Create new vehicle (Simplified - Frontend Compatible)
  */
 export const CREATE_VEHICLE = gql`
-  mutation CreateVehicle($input: CreateVehicleInput!) {
-    createVehicle(input: $input) {
+  mutation CreateVehicleSimplified($input: SimplifiedCreateVehicleInput!) {
+    createVehicleSimplified(input: $input) {
       ...VehicleFields
       ... on AMR {
         lidarEnabled
@@ -29,11 +29,11 @@ export const CREATE_VEHICLE = gql`
 `;
 
 /**
- * Mutation: Update vehicle
+ * Mutation: Update vehicle (Simplified - Frontend Compatible)
  */
 export const UPDATE_VEHICLE = gql`
-  mutation UpdateVehicle($id: ID!, $input: UpdateVehicleInput!) {
-    updateVehicle(id: $id, input: $input) {
+  mutation UpdateVehicleSimplified($id: ID!, $input: SimplifiedUpdateVehicleInput!) {
+    updateVehicleSimplified(id: $id, input: $input) {
       ...VehicleFields
     }
   }

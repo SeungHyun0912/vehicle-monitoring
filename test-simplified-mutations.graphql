@@ -1,0 +1,134 @@
+# Test Simplified Mutations
+# These can be used in GraphQL Playground or any GraphQL client
+
+# ============================================
+# Test 1: Create AMR Vehicle (Simplified)
+# ============================================
+mutation CreateAMR {
+  createVehicleSimplified(input: {
+    name: "AMR-TEST-001"
+    type: AMR
+    status: IDLE
+    isEnabled: true
+    maxSpeed: 2.5
+    batteryCapacity: 120
+  }) {
+    id
+    name
+    type
+    status
+    isEnabled
+    ... on AMR {
+      lidarEnabled
+      cameraEnabled
+      autonomyLevel
+      mapId
+    }
+  }
+}
+
+# ============================================
+# Test 2: Create AGV Vehicle (Simplified)
+# ============================================
+mutation CreateAGV {
+  createVehicleSimplified(input: {
+    name: "AGV-TEST-001"
+    type: AGV
+    status: IDLE
+    isEnabled: true
+    guideType: MAGNETIC
+    loadCapacity: 800
+  }) {
+    id
+    name
+    type
+    status
+    isEnabled
+    ... on AGV {
+      guideType
+      loadType
+      maxLoadWeight
+    }
+  }
+}
+
+# ============================================
+# Test 3: Create OHT Vehicle (Simplified)
+# ============================================
+mutation CreateOHT {
+  createVehicleSimplified(input: {
+    name: "OHT-TEST-001"
+    type: OHT
+    status: IDLE
+    isEnabled: true
+    trackId: "track-main-1"
+  }) {
+    id
+    name
+    type
+    status
+    isEnabled
+    ... on OHT {
+      railId
+      hoistStatus
+    }
+  }
+}
+
+# ============================================
+# Test 4: Update Vehicle (Simplified)
+# ============================================
+# Replace <VEHICLE_ID> with actual ID from create mutation
+mutation UpdateVehicle {
+  updateVehicleSimplified(
+    id: "<VEHICLE_ID>"
+    input: {
+      name: "AMR-TEST-001-UPDATED"
+      status: CHARGING
+      maxSpeed: 3.0
+      batteryCapacity: 150
+    }
+  ) {
+    id
+    name
+    type
+    status
+    isEnabled
+    ... on AMR {
+      lidarEnabled
+      cameraEnabled
+      autonomyLevel
+    }
+  }
+}
+
+# ============================================
+# Test 5: Disable Vehicle
+# ============================================
+mutation DisableVehicle {
+  updateVehicleSimplified(
+    id: "<VEHICLE_ID>"
+    input: {
+      isEnabled: false
+    }
+  ) {
+    id
+    name
+    isEnabled
+  }
+}
+
+# ============================================
+# Test 6: Query All Vehicles
+# ============================================
+query GetAllVehicles {
+  vehicles {
+    id
+    name
+    type
+    status
+    isEnabled
+    createdAt
+    updatedAt
+  }
+}

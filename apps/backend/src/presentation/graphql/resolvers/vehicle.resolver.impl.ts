@@ -1,6 +1,12 @@
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { VehicleInterface, VehiclePositionType, VehicleRuntimeStateType } from '../types';
-import { VehicleFilterInput, CreateVehicleInput, UpdateVehicleInput } from '../inputs';
+import {
+  VehicleFilterInput,
+  CreateVehicleInput,
+  UpdateVehicleInput,
+  SimplifiedCreateVehicleInput,
+  SimplifiedUpdateVehicleInput,
+} from '../inputs';
 import { VehicleType, VehicleStatus } from '../../../domain/value-objects';
 import {
   CreateVehicleUseCase,
@@ -10,6 +16,7 @@ import {
   GetVehiclePositionUseCase,
 } from '../../../application/use-cases/vehicle';
 import { VehicleGraphQLMapper } from '../mappers/vehicle-graphql.mapper';
+import { SimplifiedVehicleMapper } from '../mappers/simplified-vehicle.mapper';
 import { VehicleRepository } from '../../../infrastructure/database/repositories/vehicle.repository';
 import { RedisVehicleStateRepository } from '../../../infrastructure/redis/repositories/redis-vehicle-state.repository';
 
@@ -164,6 +171,76 @@ export class VehicleResolverImpl {
     }
     vehicle.updateStatus(status);
     const updated = await this.vehicleRepository.update(id, vehicle);
+    return VehicleGraphQLMapper.toGraphQL(updated);
+  }
+
+  // ========== Simplified Mutations for Frontend Compatibility ==========
+
+  @Mutation(() => VehicleInterface, {
+    name: 'createVehicleSimplified',
+    description: 'Create a new vehicle with simplified input (frontend-friendly)',
+  })
+  async createVehicleSimplified(
+    @Args('input', { type: () => SimplifiedCreateVehicleInput })
+    input: SimplifiedCreateVehicleInput,
+  ): Promise<any> {
+    // Convert simplified input to full CreateVehicleDto
+    const fullInput = SimplifiedVehicleMapper.toCreateDto(input);
+
+    // Create vehicle using existing use case
+    const vehicle = await this.createVehicleUseCase.execute(fullInput);
+
+    // Set initial status and enabled state
+    if (input.status) {
+      vehicle.updateStatus(input.status);
+    }
+    if (input.isEnabled === false) {
+      vehicle.disable();
+    }
+
+    // Save the vehicle with initial state
+    const saved = await this.vehicleRepository.update(vehicle.id as any, vehicle);
+
+    return VehicleGraphQLMapper.toGraphQL(saved);
+  }
+
+  @Mutation(() => VehicleInterface, {
+    name: 'updateVehicleSimplified',
+    description: 'Update a vehicle with simplified input (frontend-friendly)',
+  })
+  async updateVehicleSimplified(
+    @Args('id', { type: () => ID }) id: string,
+    @Args('input', { type: () => SimplifiedUpdateVehicleInput })
+    input: SimplifiedUpdateVehicleInput,
+  ): Promise<any> {
+    // Get existing vehicle to know its type
+    const vehicle = await this.getVehicleUseCase.execute(id);
+    if (!vehicle) {
+      throw new Error(`Vehicle with id ${id} not found`);
+    }
+
+    // Convert simplified input to update dto
+    const updateDto = SimplifiedVehicleMapper.toUpdateDto(input, vehicle.type);
+
+    // Handle status update
+    if (input.status) {
+      vehicle.updateStatus(input.status);
+      updateDto.status = input.status;
+    }
+
+    // Handle enable/disable
+    if (input.isEnabled !== undefined) {
+      if (input.isEnabled) {
+        vehicle.enable();
+      } else {
+        vehicle.disable();
+      }
+      updateDto.isEnabled = input.isEnabled;
+    }
+
+    // Update the vehicle
+    const updated = await this.vehicleRepository.update(id, updateDto);
+
     return VehicleGraphQLMapper.toGraphQL(updated);
   }
 }
